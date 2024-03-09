@@ -20,13 +20,14 @@ const ChartBox = (props) => {
           <img src={props.icon} alt="" />
           <span>{props.title}</span>
         </div>
-        {/* <h2>{props.number}MB</h2> */}
+      <center>  <h2 >{props.number} </h2></center>
         {/* <a href="/" style={{ color: props.color }}>
           View all
         </a> */}
+        
       </div>
-      <div className="chartInfo">
-        {/* <div className="chart">
+      {/* <div className="chartInfo">
+        <div className="chart">
           <ResponsiveContainer width="99%" height="100%">
             <LineChart data={props.chartData}>
               <Tooltip
@@ -39,11 +40,11 @@ const ChartBox = (props) => {
                 dataKey={props.dataKey}
                 stroke={props.color}
                 strokeWidth={2}
-                dot={false}
+                dot={true}
               />
             </LineChart>
           </ResponsiveContainer>
-        </div> */}
+        </div>
         <div className="texts">
           <span
             className="percentage"
@@ -53,7 +54,7 @@ const ChartBox = (props) => {
           </span>
           <span className="duration">this month</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

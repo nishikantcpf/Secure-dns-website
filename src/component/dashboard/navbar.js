@@ -34,13 +34,13 @@ const Navbar = () => {
 
         </nav> */}
 
-        <div className="user">
+        {/* <div className="user">
           <img
             src="/img/profile.png"
             alt="profile"
           />
           <span>John</span>
-        </div>
+        </div> */}
        
         {/* <img src="/dashboard.svg" alt="" className="icon" /> */}
         

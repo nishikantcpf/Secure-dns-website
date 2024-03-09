@@ -5,6 +5,19 @@
 import { menu } from "../../component/dashboard/data";
 
 const Menu = () => {
+  const handleLogout = () => {
+  
+    // signOut(auth).then(() => {
+    window.localStorage.clear();
+    alert("loged out")
+    window.location.reload();
+
+
+    // }).catch((error) => {
+
+    //   alert(error)
+    // });
+  }
   return (
     <div className="menu">
       {menu.map((item) => (
@@ -18,6 +31,21 @@ const Menu = () => {
           ))}
         </div>
       ))}
+      
+        <div className="item" >
+          <span className="title"></span>
+         
+            <a  onClick={handleLogout}  className="listItem" >
+            <img
+            src="logout.svg"
+            alt="logout"
+          /> 
+              <span className="listItemTitle">Logout</span>
+            </a >
+        
+        </div>
+  
+      
     </div>
   );
 };

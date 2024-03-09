@@ -21,6 +21,12 @@ export const menu = [
         url: "/profile",
         icon: "user.svg",
       },
+      {
+        id: 4,
+        title: "Traffics",
+        url: "/traffics",
+        icon: "element.svg",
+      },
     ],
   },
   {
@@ -39,12 +45,12 @@ export const menu = [
       //   url: "/configuration",
       //   icon: "note.svg",
       // },
-      {
-        id: 3,
-        title: "Logout",
-        url: "/orders",
-        icon: "logout.svg",
-      },
+      // {
+      //   id: 3,
+      //   title: "Logout",
+      //   url: "/",
+      //   icon: "logout.svg",
+      // },
       // {
       //   id: 4,
       //   title: "Posts",
@@ -138,16 +144,16 @@ export const chartBoxUser = {
   icon: "/userIcon.svg",
   title: "Total Data ",
   number: "11238",
-  dataKey: "users",
+  dataKey: "data",
   percentage: 45,
   chartData: [
-    { name: "Sun", users: 400 },
-    { name: "Mon", users: 600 },
-    { name: "Tue", users: 500 },
-    { name: "Wed", users: 700 },
-    { name: "Thu", users: 400 },
-    { name: "Fri", users: 500 },
-    { name: "Sat", users: 450 },
+    { name: "Sun", data: 400 },
+    { name: "Mon", data: 600 },
+    { name: "Tue", data: 500 },
+    { name: "Wed", data: 700 },
+    { name: "Thu", data: 400 },
+    { name: "Fri", data: 500 },
+    { name: "Sat", data: 450 },
   ],
 };
 

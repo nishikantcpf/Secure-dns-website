@@ -18,7 +18,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
 
 
-const Layout = () => {
+const Traffics = () => {
 
     const { currentUser } = useContext(AuthContext)
     const user = [currentUser]
@@ -125,41 +125,24 @@ const Layout = () => {
                             <div className="home">
                                 <div className="box box1">
 
-                                    <TopBox />
                                 </div>
                                 <div className="box box2">
-                                    {userData === null ? <><div className="center_loader" ><div className="loader"></div></div></> : <>
-
-                                        <ChartBox {...totaldata} />
-                                    </>}
+                                   
                                 </div>
                                 <div className="box box4">
-                                    <PieChartBox />
+                                   
                                 </div>
                                 <div className="box box7">
-                                    <BigChartBox />
+                                   
                                 </div>
                                 <div className="box box3">
-                                    {userData === null ? <><div className="center_loader" ><div className="loader"></div></div></> : <>
-                                        <ChartBox {...reciveddata} />
-                                    </>}
+                                   
                                 </div>
 
                                 <div className="box box5">
-                                    {userData === null ? <><div className="center_loader" ><div className="loader"></div></div></> : <>
-                                        <ChartBox {...sentdata} />
-                                    </>}
+                                   
                                 </div>
-                                {/* <div className="box box6">
-                            <ChartBox {...chartBoxRevenue} />
-                        </div>
-                        
-                        <div className="box box8">
-                            <BarChartBox {...barChartBoxVisit} />
-                        </div>
-                        <div className="box box9">
-                            <BarChartBox {...barChartBoxRevenue} />
-                        </div> */}
+                               
 
                             </div>
                         </div>
@@ -171,4 +154,4 @@ const Layout = () => {
     );
 };
 
-export default Layout
+export default Traffics
