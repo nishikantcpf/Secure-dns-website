@@ -16,6 +16,8 @@ import { base_url } from "@/util/baseUrl";
 import { db } from "@/firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
+import { DataGrid } from "@mui/x-data-grid";
+import moment from "moment";
 
 
 const Traffics = () => {
@@ -26,89 +28,54 @@ const Traffics = () => {
     const jwtSecret = 'your-secret-key';
     const [userData, setUserData] = useState(null);
 
-
+    let id;
     useEffect(() => {
         const fetchArticle = async () => {
 
-            // find token
-            let id;
+
+
             if (typeof window !== 'undefined') {
                 id = JSON.parse(localStorage.getItem("user"));
 
             }
-            const token = id.token
+            const token = id ? id.token : null
 
-            // decode token
+
             const decoded = jwtDecode(token, jwtSecret);
             const uid = decoded.uid
 
-            // write query for data
-            const usersCollection = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
+
+            const usersCollection = query(collection(db, "traffic_log"), where("uid", "==", uid));
             const querySnapshot = await getDocs(usersCollection);
-            // const usersCollection2 = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
-            // const querySnapshot2 = await getDocs(usersCollection2);
-            // const usersCollection3 = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
-            // const querySnapshot3 = await getDocs(usersCollection3);
+
             const array = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }))
-            let sumKey1 = 0;
-            let sumKey2 = 0;
-
-            
-            let data = null;
-        if (!querySnapshot.empty) {
-            // Iterate over each object in the array
-            array.forEach(obj => {
-                sumKey1 += obj.totalDownload;
-                sumKey2 += obj.totalUpload;
-            });
-            console.log(sumKey1 , sumKey2)
-
-            const userData = querySnapshot.docs[0].data();
-            data = {
-                "downloaddata": sumKey1,
-                "reciveddata": sumKey2,
-                "totaldata": sumKey1 + sumKey2,
-            };
-        }
 
 
-            setUserData(data)
+            setUserData(array)
 
         };
 
         fetchArticle();
 
-    }, []);
+    }, [id]);
 
 
 
-    const totaldata = {
-        color: "#8884d8",
-        icon: "/userIcon.svg",
-        title: "Total Data ",
-        number: userData ? userData.totaldata : 0,
-        dataKey: "data",
+    console.log(userData)
+    const columns = [
+        {
+            field: 'time_stamp', headerName: 'Time', width: 150,
+            valueFormatter: params => params?.value ? moment(params?.value.toDate()).format("DD/MM/YYYY hh:mm") : "",
+        },
+        { field: 'isBlocked', headerName: 'Blocked', width: 130 },
+        { field: 'domain', headerName: 'Domain', width: 500, editable: true },
+    ];
+    const rowClassName = (params) => {
+        return params.id % 2 === 0 ? 'even-row' : 'odd-row';
     };
-    const reciveddata = {
-        color: "skyblue",
-        icon: "/productIcon.svg",
-        title: "Data Recived",
-        number: userData ? userData.reciveddata : 0,
-        dataKey: "products",
-    };
-    const sentdata = {
-        color: "gold",
-        icon: "/conversionIcon.svg",
-        title: "Data sent",
-        number: userData ?  userData.downloaddata : 0,
-        dataKey: "ratio",
-    };
-
-
-
 
     return (
         <>
@@ -120,32 +87,26 @@ const Traffics = () => {
                         <div className="menuContainer">
                             <Menu />
                         </div>
-
-                        <div className="contentContainer">
-                            <div className="home">
-                                <div className="box box1">
-
-                                </div>
-                                <div className="box box2">
-                                   
-                                </div>
-                                <div className="box box4">
-                                   
-                                </div>
-                                <div className="box box7">
-                                   
-                                </div>
-                                <div className="box box3">
-                                   
-                                </div>
-
-                                <div className="box box5">
-                                   
-                                </div>
+                        {userData === null ? <></> : <>
+                            <div className="contentContainer" style={{ borderRadius: '20px', }}>
+                                <div style={{ backgroundColor: "#EADEDA", borderRadius: '20px', padding: '20px' }}>
+                                    <div className="myTable" style={{ height: 600, width: "100%" }}>
+                                        <DataGrid
+                                            rows={userData}
+                                            columns={columns}
+                                            hideScrollbar={true}
                                
 
+                                        />
+                                      
+
+                                    </div>
+
+
+                                </div>
+                                {/* <h1>{userData[0].time_stamp.toDate().toLocaleString()}</h1> */}
                             </div>
-                        </div>
+                        </>}
                     </div>
                     <Footer />
                 </div>

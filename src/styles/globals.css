@@ -30,7 +30,7 @@ body {
   padding: 0;
 }
 
-form {
+.formbackground {
   text-align:center;
   width: 350px;
   position: relative;
@@ -102,6 +102,13 @@ form .btn {
   border-radius: 4px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   font-size: 17px;
+}
+form .resetpage{
+    gap: 3%;
+    display: flex;
+    align-items: baseline;
+  
+    justify-content: flex-end;
 }
 .login-title {
     text-align: center;
@@ -231,4 +238,29 @@ form .btn {
     align-items: center;
     height: 50%;
   
+}
+
+.myTable::-webkit-scrollbar {
+  display: none;
+}
+
+.css-pdct74-MuiTablePagination-selectLabel {
+  color: black;
+
+}
+.css-levciy-MuiTablePagination-displayedRows {
+  color: black;
+}
+.even-row {
+  background-color: #000000; /* Background color of even rows */
+  border: 1px solid #ccc; /* Border color for even rows */
+}
+
+.odd-row {
+  background-color: #a9ff0a; /* Background color of odd rows */
+  border: 1px solid #ccc; /* Border color for odd rows */
+}
+
+.size{
+      font-size: 24px;
 }

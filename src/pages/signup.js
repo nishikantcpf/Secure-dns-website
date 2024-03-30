@@ -84,7 +84,8 @@ const Signup = () => {
                         lastname: values.lastname,
                         email: values.email,
                         mobile: values.mobile,
-                        uid: user.uid
+                        uid: user.uid,
+                        role:"user"
 
 
 
@@ -178,7 +179,7 @@ const Signup = () => {
                 {/* <div className="col-lg-12 col-sm-12 padding-50"> */}
                 <div className="col-lg-12 col-sm-12 ">
                     <div >
-                        <form onSubmit={formik.handleSubmit} style={{width: "505px"}}>
+                        <form className='formbackground' onSubmit={formik.handleSubmit} style={{width: "505px"}}>
                             <div className="login-title ">
                                 <h2 className="login-title ">Sign Up</h2>
                             </div>

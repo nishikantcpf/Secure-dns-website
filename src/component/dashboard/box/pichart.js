@@ -2,7 +2,7 @@ import { db } from "@/firebase/firebase";
 import { collection,  getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart,  ResponsiveContainer, Tooltip } from "recharts";
 // import "./pieChartBox.scss";
 
 // const data = [
@@ -86,6 +86,7 @@ const PieChartBox = () => {
               {userData.map((item) => (
                 <Cell key={item.name} fill={item.color} />
               ))}
+             
             </Pie>
           </PieChart>
         </ResponsiveContainer>

@@ -2,15 +2,7 @@
 
 import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 
-// type Props = {
-//   color: string;
-//   icon: string;
-//   title: string;
-//   dataKey: string;
-//   number: number | string;
-//   percentage: number;
-//   chartData: object[];
-// };
+
 
 const ChartBox = (props) => {
   return (
@@ -20,7 +12,7 @@ const ChartBox = (props) => {
           <img src={props.icon} alt="" />
           <span>{props.title}</span>
         </div>
-      <center>  <h2 >{props.number} </h2></center>
+      <center>  <h2 className="size">{Math.floor(props.number/1000) } </h2> <span className="duration">In Thousands</span></center>
         {/* <a href="/" style={{ color: props.color }}>
           View all
         </a> */}
@@ -52,7 +44,7 @@ const ChartBox = (props) => {
           >
             {props.percentage}MB
           </span>
-          <span className="duration">this month</span>
+          <span className="duration">In Thousands</span>
         </div>
       </div> */}
     </div>

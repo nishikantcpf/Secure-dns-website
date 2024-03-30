@@ -43,7 +43,7 @@ const Layout = () => {
             const uid = decoded.uid
 
             // write query for data
-            const usersCollection = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
+            const usersCollection = query(collection(db, "vpn_stats"), where("uid", "==", uid));
             const querySnapshot = await getDocs(usersCollection);
             // const usersCollection2 = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
             // const querySnapshot2 = await getDocs(usersCollection2);
@@ -61,8 +61,8 @@ const Layout = () => {
         if (!querySnapshot.empty) {
             // Iterate over each object in the array
             array.forEach(obj => {
-                sumKey1 += obj.totalDownload;
-                sumKey2 += obj.totalUpload;
+                sumKey1 +=  Math.floor(obj.totaldownload);
+                sumKey2 +=  Math.floor(obj.totalupload);
             });
             console.log(sumKey1 , sumKey2)
 
@@ -88,21 +88,21 @@ const Layout = () => {
     const totaldata = {
         color: "#8884d8",
         icon: "/userIcon.svg",
-        title: "Total Data ",
+        title: "Total Packets ",
         number: userData ? userData.totaldata : 0,
         dataKey: "data",
     };
     const reciveddata = {
         color: "skyblue",
         icon: "/productIcon.svg",
-        title: "Data Recived",
+        title: "Packets Recived",
         number: userData ? userData.reciveddata : 0,
         dataKey: "products",
     };
     const sentdata = {
         color: "gold",
         icon: "/conversionIcon.svg",
-        title: "Data sent",
+        title: "Packets sent",
         number: userData ?  userData.downloaddata : 0,
         dataKey: "ratio",
     };
@@ -150,16 +150,7 @@ const Layout = () => {
                                         <ChartBox {...sentdata} />
                                     </>}
                                 </div>
-                                {/* <div className="box box6">
-                            <ChartBox {...chartBoxRevenue} />
-                        </div>
-                        
-                        <div className="box box8">
-                            <BarChartBox {...barChartBoxVisit} />
-                        </div>
-                        <div className="box box9">
-                            <BarChartBox {...barChartBoxRevenue} />
-                        </div> */}
+                               
 
                             </div>
                         </div>

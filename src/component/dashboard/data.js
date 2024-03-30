@@ -12,15 +12,15 @@ export const menu = [
       {
         id: 2,
         title: "Dashboard",
-        url: "/newdash",
+        url: "/dashboard",
         icon: "dashboard.svg",
       },
-      {
-        id: 3,
-        title: "Profile",
-        url: "/profile",
-        icon: "user.svg",
-      },
+      // {
+      //   id: 3,
+      //   title: "Profile",
+      //   url: "/profile",
+      //   icon: "user.svg",
+      // },
       {
         id: 4,
         title: "Traffics",
@@ -39,24 +39,7 @@ export const menu = [
       //   url: "/users",
       //   icon: "element.svg",
       // },
-      // {
-      //   id: 2,
-      //   title: "Configuration",
-      //   url: "/configuration",
-      //   icon: "note.svg",
-      // },
-      // {
-      //   id: 3,
-      //   title: "Logout",
-      //   url: "/",
-      //   icon: "logout.svg",
-      // },
-      // {
-      //   id: 4,
-      //   title: "Posts",
-      //   url: "/posts",
-      //   icon: "order.svg",
-      // },
+    
     ],
   },
   // {
@@ -69,24 +52,6 @@ export const menu = [
   //       url: "/",
   //       icon: "element.svg",
   //     },
-  //     {
-  //       id: 2,
-  //       title: "Notes",
-  //       url: "/",
-  //       icon: "note.svg",
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Forms",
-  //       url: "/",
-  //       icon: "form.svg",
-  //     },
-  //     {
-  //       id: 4,
-  //       title: "Calendar",
-  //       url: "/",
-  //       icon: "calendar.svg",
-  //     },
   //   ],
   // },
   // {
@@ -98,12 +63,6 @@ export const menu = [
   //       title: "Settings",
   //       url: "/",
   //       icon: "setting.svg",
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Backups",
-  //       url: "/",
-  //       icon: "backup.svg",
   //     },
   //   ],
   // },
@@ -142,7 +101,7 @@ export const topDealUsers = [
 export const chartBoxUser = {
   color: "#8884d8",
   icon: "/userIcon.svg",
-  title: "Total Data ",
+  title: "Total Packets ",
   number: "11238",
   dataKey: "data",
   percentage: 45,
@@ -160,7 +119,7 @@ export const chartBoxUser = {
 export const chartBoxProduct = {
   color: "skyblue",
   icon: "/productIcon.svg",
-  title: "Data Recived",
+  title: "Packets Recived",
   number: "238",
   dataKey: "products",
   percentage: 21,
@@ -176,8 +135,8 @@ export const chartBoxProduct = {
 };
 export const chartBoxRevenue = {
   color: "teal",
-  icon: "/revenueIcon.svg",
-  title: "Data Sent",
+  icon: "/revenueIcon.svg (In thousand)",
+  title: "Packets Sent",
   number: "$56.432",
   dataKey: "revenue",
   percentage: -12,
