@@ -96,18 +96,18 @@ const Layout = () => {
         color: "skyblue",
         icon: "/productIcon.svg",
         title: "Packets Recived",
-        number: userData ? userData.reciveddata : 0,
+        number: userData ? userData.downloaddata : 0,
         dataKey: "products",
     };
     const sentdata = {
         color: "gold",
         icon: "/conversionIcon.svg",
         title: "Packets sent",
-        number: userData ?  userData.downloaddata : 0,
+        number: userData ?  userData.reciveddata : 0,
         dataKey: "ratio",
     };
 
-
+console.log(userData)
 
 
     return (

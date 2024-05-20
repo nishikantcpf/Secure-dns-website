@@ -72,13 +72,13 @@ const BigChartBox = () => {
       // write query for data
       const currentMonth = query(
         collection(db, "vpn_stats"),
-        where("uid", "==", "UQzvprW0QtU6bQkbX672GXdzvRT2"),
+        where("uid", "==", uid),
         where("timestamp", ">=", currentMonthStartDate),
         where("timestamp", "<=", currentMonthEndDate)
       );
       const previousMonth = query(
         collection(db, "vpn_stats"),
-        where("uid", "==", "UQzvprW0QtU6bQkbX672GXdzvRT2"),
+        where("uid", "==", uid),
         where("timestamp", ">=", previousMonthStartDate),
         where("timestamp", "<=", previousMonthEndDate)
       );

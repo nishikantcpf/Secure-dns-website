@@ -40,6 +40,9 @@ const PieChartBox = () => {
       const querySnapshot2 = await getDocs(usersCollection2);
       const usersCollection3 = query(collection(db, "conf_log"), where("uid", "==", uid),where("device", "==", 'windows'));
       const querySnapshot3 = await getDocs(usersCollection3);
+      // const divicecount = query(collection(db, "conf_log"), where("uid", "==", uid));
+      // const counts = await getDocs(divicecount);
+      // console.log(counts.docs.length)
   //  console.log(querySnapshot)
       // const usersData = querySnapshot.docs.map((doc) => ({
       //   id: doc.id,

@@ -77,9 +77,6 @@ const Login = () => {
                 <meta charset="utf-8" />
                 <meta name="author" content="Secure Dns" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-
-
                 <title>Cyberpeace Secure Dns</title>
                 <link rel="icon" href="/favicon.ico" />
 
