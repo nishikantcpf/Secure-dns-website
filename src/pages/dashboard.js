@@ -5,17 +5,18 @@ import Menu from "@/component/dashboard/menu";
 import Navbar from "@/component/dashboard/navbar";
 import PieChartBox from "@/component/dashboard/box/pichart";
 import BigChartBox from "@/component/dashboard/box/BigChartBox";
-import BarChartBox from "@/component/dashboard/box/BarChartBox";
+// import BarChartBox from "@/component/dashboard/box/BarChartBox";
 import Footer from "@/component/dashboard/footer";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ProtectedPage from "@/Authentication/protected-page";
-import axios from "axios";
-import { base_url } from "@/util/baseUrl";
+
 import { db } from "@/firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
+import { base_url } from "@/util/baseUrl";
+import axios from "axios";
 
 
 const Layout = () => {
@@ -30,52 +31,60 @@ const Layout = () => {
     useEffect(() => {
         const fetchArticle = async () => {
 
-            // find token
+            
             let id;
             if (typeof window !== 'undefined') {
                 id = JSON.parse(localStorage.getItem("user"));
 
             }
             const token = id.token
+            // console.log(token)
 
-            // decode token
             const decoded = jwtDecode(token, jwtSecret);
             const uid = decoded.uid
-
-            // write query for data
-            const usersCollection = query(collection(db, "vpn_stats"), where("uid", "==", uid));
-            const querySnapshot = await getDocs(usersCollection);
-            // const usersCollection2 = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
-            // const querySnapshot2 = await getDocs(usersCollection2);
-            // const usersCollection3 = query(collection(db, "vpn_stats2"), where("uid", "==", uid));
-            // const querySnapshot3 = await getDocs(usersCollection3);
-            const array = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }))
-            let sumKey1 = 0;
-            let sumKey2 = 0;
+            try {
+                axios.get(`${base_url}user/statdata/${uid}`, 
+                     
+                ).then((Response) => {
+             
+                 
+                    setUserData(Response.data.data)
+                   
+                });
+              } catch (error) {
+                throw new Error('No user data found');
+              }
+           
+        //     const usersCollection = query(collection(db, "vpn_stats"), where("uid", "==", uid));
+        //     const querySnapshot = await getDocs(usersCollection);
+           
+        //     const array = querySnapshot.docs.map((doc) => ({
+        //         id: doc.id,
+        //         ...doc.data(),
+        //     }))
+        //     let sumKey1 = 0;
+        //     let sumKey2 = 0;
 
             
-            let data = null;
-        if (!querySnapshot.empty) {
-            // Iterate over each object in the array
-            array.forEach(obj => {
-                sumKey1 +=  Math.floor(obj.totaldownload);
-                sumKey2 +=  Math.floor(obj.totalupload);
-            });
-            console.log(sumKey1 , sumKey2)
+        //     let data = null;
+        // if (!querySnapshot.empty) {
+           
+        //     array.forEach(obj => {
+        //         sumKey1 +=  Math.floor(obj.totaldownload);
+        //         sumKey2 +=  Math.floor(obj.totalupload);
+        //     });
+        //     // console.log(sumKey1 , sumKey2)
 
-            const userData = querySnapshot.docs[0].data();
-            data = {
-                "downloaddata": sumKey1,
-                "reciveddata": sumKey2,
-                "totaldata": sumKey1 + sumKey2,
-            };
-        }
+        //     const userData = querySnapshot.docs[0].data();
+        //     data = {
+        //         "downloaddata": sumKey1,
+        //         "reciveddata": sumKey2,
+        //         "totaldata": sumKey1 + sumKey2,
+        //     };
+        // }
 
 
-            setUserData(data)
+           
 
         };
 
@@ -107,12 +116,13 @@ const Layout = () => {
         dataKey: "ratio",
     };
 
-console.log(userData)
+    console.log(sentdata)
 
 
     return (
         <>
             {user[0] === null ? <ProtectedPage /> : <>
+           
 
                 <div className="main">
                     <Navbar />

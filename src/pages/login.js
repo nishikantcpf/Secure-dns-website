@@ -38,13 +38,11 @@ const Login = () => {
 
                 dispatch({ type: "LOGIN", payload: user })
                 router.push('/dashboard')
-                console.log(response);
+                // console.log(response);
             } catch (error) {
                 console.error(error);
                 toast('Username or password not matched')
             }
-
-
 
         },
     });

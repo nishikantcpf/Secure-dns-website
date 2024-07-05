@@ -15,10 +15,10 @@ import { jwtDecode } from "jwt-decode"
 
 const TopBox = () => {
 
-  const jwtSecret = 'your-secret-key';
-
+  // const jwtSecret = 'your-secret-key';
+  const jwtSecret = process.env.JWT_SECRET
   const [userData, setUserData] = useState(null);
- 
+
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -29,35 +29,38 @@ const TopBox = () => {
         id = JSON.parse(localStorage.getItem("user"));
 
       }
+     
       const token = id.token
-
+      
       // decode token
       const decoded = jwtDecode(token, jwtSecret);
       const uid = decoded.uid
-
-      // write query for data
-      const usersCollection = query(collection(db, "users"), where("uid", "==", uid));;
-      const querySnapshot = await getDocs(usersCollection);
-
-      const usersData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const data = usersData[0]
-
     
-      setUserData(data)
+      try {
+      
+        axios.get(`${base_url}user/userdetail/${uid}`, 
+       
+        ).then((Response) => {
+          
+          setUserData(Response.data.userData);
+
+        });
+
+
+      } catch (error) {
+        throw new Error('No user data found');
+      }
 
     };
 
     fetchArticle();
 
   }, []);
-  
 
 
 
 
+ 
   return (
     <div className="topBox">
       <h2>User Details</h2>

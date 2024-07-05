@@ -1,4 +1,6 @@
 import { db } from "@/firebase/firebase";
+import { base_url } from "@/util/baseUrl";
+import axios from "axios";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
@@ -31,7 +33,7 @@ const data = [
 ];
 
 const BigChartBox = () => {
-  const jwtSecret = 'your-secret-key';
+  const jwtSecret = process.env.JWT_SECRET;
   const [userData, setUserData] = useState(null);
   const [userData2, setUserData2] = useState(null);
 
@@ -50,92 +52,111 @@ const BigChartBox = () => {
       // decode token
       const decoded = jwtDecode(token, jwtSecret);
       const uid = decoded.uid
+      
 
-
-      // Get the current date
-      const currentDate = new Date();
-
-      // Get the current month's start date (1st day of the current month)
-      const currentMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
-      // Get the current month's end date (last day of the current month)
-      const currentMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
-      // Get the previous month's start date (1st day of the previous month)
-      const previousMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-
-      // Get the previous month's end date (last day of the previous month)
-      const previousMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-
-
-
-      // write query for data
-      const currentMonth = query(
-        collection(db, "vpn_stats"),
-        where("uid", "==", uid),
-        where("timestamp", ">=", currentMonthStartDate),
-        where("timestamp", "<=", currentMonthEndDate)
-      );
-      const previousMonth = query(
-        collection(db, "vpn_stats"),
-        where("uid", "==", uid),
-        where("timestamp", ">=", previousMonthStartDate),
-        where("timestamp", "<=", previousMonthEndDate)
-      );
-
-
-
-      const querySnapshot = await getDocs(currentMonth);
-      const querySnapshot2 = await getDocs(previousMonth);
-
-      const array1 = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      const array2 = querySnapshot2.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      let sumKey1 = 0;
-      let sumKey2 = 0;
-      let sumKey3 = 0;
-      let sumKey4 = 0;
-
-
-      let data = null;
-      let data2 = null;
-      if (!querySnapshot.empty) {
-        // Iterate over each object in the array
-        array1.forEach(obj => {
-          sumKey1 += Math.floor(obj.totaldownload);
-          sumKey2 += Math.floor(obj.totalupload);
-        });
+try {
+  axios.get(`${base_url}user/bigchart/${uid}`, 
        
-        data = {
-          'name': "Current Month",
-          'Recived':Math.floor(sumKey1/1000) ,
-          'Send':Math.floor(sumKey2/1000),
-         
-        };
-      }
-      if (!querySnapshot2.empty) {
-        // Iterate over each object in the array
-        array2.forEach(obj => {
-          sumKey3 += Math.floor(obj.totaldownload);
-          sumKey4 += Math.floor(obj.totalupload);
-        });
-        
-        data2 = {
-          'name': "Last Month",
-          'Recived': Math.floor(sumKey3/1000) ,
-          'Send': Math.floor(sumKey4/1000) ,
-         
-        };
-        
-      }
+  ).then((Response) => {
+  
+   
+setUserData(Response.data.data)
+      setUserData2(Response.data.data2)
+  });
+} catch (error) {
+  throw new Error('No user data found');
+}
 
-      setUserData(data)
-      setUserData2(data2)
+
+
+
+
+
+
+
+
+      // const currentDate = new Date();
+
+     
+      // const currentMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+      
+      // const currentMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+      
+      // const previousMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+
+      
+      // const previousMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+
+
+
+     
+      // const currentMonth = query(
+      //   collection(db, "vpn_stats"),
+      //   where("uid", "==", uid),
+      //   where("timestamp", ">=", currentMonthStartDate),
+      //   where("timestamp", "<=", currentMonthEndDate)
+      // );
+      // const previousMonth = query(
+      //   collection(db, "vpn_stats"),
+      //   where("uid", "==", uid),
+      //   where("timestamp", ">=", previousMonthStartDate),
+      //   where("timestamp", "<=", previousMonthEndDate)
+      // );
+
+
+
+      // const querySnapshot = await getDocs(currentMonth);
+      // const querySnapshot2 = await getDocs(previousMonth);
+
+      // const array1 = querySnapshot.docs.map((doc) => ({
+      //   id: doc.id,
+      //   ...doc.data(),
+      // }))
+      // const array2 = querySnapshot2.docs.map((doc) => ({
+      //   id: doc.id,
+      //   ...doc.data(),
+      // }))
+      // let sumKey1 = 0;
+      // let sumKey2 = 0;
+      // let sumKey3 = 0;
+      // let sumKey4 = 0;
+
+
+      // let data = null;
+      // let data2 = null;
+      // if (!querySnapshot.empty) {
+      
+      //   array1.forEach(obj => {
+      //     sumKey1 += Math.floor(obj.totaldownload);
+      //     sumKey2 += Math.floor(obj.totalupload);
+      //   });
+       
+      //   data = {
+      //     'name': "Current Month",
+      //     'Recived':Math.floor(sumKey1/1000) ,
+      //     'Send':Math.floor(sumKey2/1000),
+         
+      //   };
+      // }
+      // if (!querySnapshot2.empty) {
+        
+      //   array2.forEach(obj => {
+      //     sumKey3 += Math.floor(obj.totaldownload);
+      //     sumKey4 += Math.floor(obj.totalupload);
+      //   });
+        
+      //   data2 = {
+      //     'name': "Last Month",
+      //     'Recived': Math.floor(sumKey3/1000) ,
+      //     'Send': Math.floor(sumKey4/1000) ,
+         
+      //   };
+        
+      // }
+
+      
 
     };
 

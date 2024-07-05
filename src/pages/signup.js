@@ -50,60 +50,21 @@ const Signup = () => {
             firstname: '',
             lastname: '',
             mobile: '',
+            role: "user",
         },
         validationSchema: schema,
         onSubmit: async (values) => {
 
            
-            async function checkEmailExists(email) {
-                try {
-                  
-                  const existingMethods = await auth.fetchSignInMethodsForEmail(email);
-              
-                  return existingMethods.length > 0; // True if email exists, false otherwise
-                } catch (error) {
-                  console.error("Error checking email existence:", error);
-                  throw error; // Re-throw the error for proper handling in calling code
-                }
+            
+            try {
+                const response = await axios.post(base_url + 'user/signup', values);
+                toast("User created ")
+                router.push("/login")
+              } catch (error) {
+                throw new Error(error);
               }
               
-              
-
-            createUserWithEmailAndPassword(auth, values.email, values.password)
-                .then(async (userCredential) => {
-                    // Signed in
-                    // updateProfile(auth.currentUser, {
-                    //     displayName: values.password,
-                    //     phoneNumber: values.password
-                    // });
-
-                    const user = userCredential.user;
-
-                    const docRef = await addDoc(collection(db, "users"), {
-                        firstname: values.firstname,
-                        lastname: values.lastname,
-                        email: values.email,
-                        mobile: values.mobile,
-                        uid: user.uid,
-                        role:"user"
-
-
-
-
-                    });
-                    toast("User created ")
-                    router.push("/login")
-
-                })
-                .catch((error) => {
-                    // setError(true);
-                   console.log(error);
-               
-                   toast('Email is already exsit ')
-                   
-                });
-
-
         },
     });
 
