@@ -158,7 +158,7 @@ const Traffics = () => {
                                                     <td style={{ color: "red" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
                                                 </tr>
                                                 <tr style={{ backgroundColor: "#f2dede" }}>
-                                                    <td>https://offerintro.com/BJP2024-Recharge/id=QYntPBDU</td>
+                                                    <td>offerintro.com</td>
                                                     <td style={{ color: "red" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
                                                 </tr>
                                             </tbody>
