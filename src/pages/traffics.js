@@ -1,24 +1,17 @@
-import ChartBox from "@/component/dashboard/box/ChartBox";
-import TopBox from "@/component/dashboard/box/TopBox";
-import { barChartBoxRevenue, barChartBoxVisit, chartBoxConversion, chartBoxProduct, chartBoxRevenue, chartBoxUser } from "@/component/dashboard/data";
 import Menu from "@/component/dashboard/menu";
 import Navbar from "@/component/dashboard/navbar";
-import PieChartBox from "@/component/dashboard/box/pichart";
-import BigChartBox from "@/component/dashboard/box/BigChartBox";
-import BarChartBox from "@/component/dashboard/box/BarChartBox";
 import Footer from "@/component/dashboard/footer";
-import { useRouter } from "next/router";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ProtectedPage from "@/Authentication/protected-page";
-import axios from "axios";
-import { base_url } from "@/util/baseUrl";
 import { db } from "@/firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { jwtDecode } from "jwt-decode";
 import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
-
+import styles from '../styles/style.module.css';
+import { base_url } from "@/util/baseUrl";
+import axios from "axios";
 
 const Traffics = () => {
 
@@ -44,38 +37,83 @@ const Traffics = () => {
             const decoded = jwtDecode(token, jwtSecret);
             const uid = decoded.uid
 
+            try {
+             axios.get(`${base_url}user/checkDomains/${uid}`).then((Response) => {
+             
+                 console.log(Response.data)
+                    setUserData(Response.data)
+                   
+                });
+              } catch (error) {
+                throw new Error("error");
+              }
+         
 
-            const usersCollection = query(collection(db, "traffic_log"), where("uid", "==", uid));
-            const querySnapshot = await getDocs(usersCollection);
-
-            const array = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }))
-
-
-            setUserData(array)
+          
 
         };
 
         fetchArticle();
-
+        console.log() 
     }, [id]);
 
+     
 
-
-    console.log(userData)
+    
     const columns = [
-        {
-            field: 'time_stamp', headerName: 'Time', width: 150,
-            valueFormatter: params => params?.value ? moment(params?.value.toDate()).format("DD/MM/YYYY hh:mm") : "",
+        { field: 'id', headerName: '', width: 100 ,align: 'center',
+        //     cellStyle: {
+        //     marginRight: 20, 
+        //     paddingLeft: 200, 
+        //     textAlign:'center',
+        //   },
         },
-        { field: 'isBlocked', headerName: 'Blocked', width: 130 },
-        { field: 'domain', headerName: 'Domain', width: 500, editable: true },
+        { field: 'domain', headerName: 'Domain', width: 700 },
+        {
+            field: 'status',
+            headerName: 'Status',
+            width: 100,
+            renderCell: (params) => (
+                <i
+                    className={`fa fa-circle ${styles['status-icon']} ${
+                        params.value === 'valid' ? styles.green : styles.red
+                    }`}
+                    aria-hidden="true"
+                ></i>
+            ),
+        },
+        {field:'timestamp', headerName:'Time',  
+        valueFormatter: (params) => 
+            moment.utc(params.value).format('MMMM Do YYYY, h:mm:ss a')
+        // moment(params.value).startOf('day').fromNow()
+        
+         , 
+        width: 300,},
     ];
-    const rowClassName = (params) => {
-        return params.id % 2 === 0 ? 'even-row' : 'odd-row';
-    };
+
+    // add id to add data 
+   const userdata1=  userData?.map((item, index) => ({
+        ...item,
+        id: index + 1 // You can start from 1 or 0, depending on your preference
+      }));
+    const rows = userdata1
+    // const rows = [
+    //     { id: 1, domain: 'sb.scorecardresearch.com', status: 'active' },
+    //     { id: 2, domain: 'www.googletagmanager.com', status: 'active' },
+    //     { id: 3, domain: 'tunnel.googlezip.net', status: 'active' },
+    //     { id: 4, domain: 'encrypted-tbn2.gstatic.com', status: 'active' },
+    //     { id: 5, domain: 'www-bikedekho-com.cdn.ampproject.org', status: 'active' },
+    //     { id: 6, domain: 'connect.facebook.net', status: 'active' },
+    //     { id: 7, domain: 'www.bikewale.com', status: 'active' },
+    //     { id: 8, domain: 'www.gstatic.com', status: 'active' },
+    //     { id: 9, domain: 'www.youtube.com', status: 'active' },
+    //     { id: 10, domain: 'downloadfilmyzilla.com', status: 'inactive' },
+    //     { id: 11, domain: 'probiv.in', status: 'inactive' },
+    //     { id: 12, domain: 'offerintro.com', status: 'inactive' },
+        
+    //     // Add more rows as needed
+    // ];
+    
 
     return (
         <>
@@ -87,92 +125,40 @@ const Traffics = () => {
                         <div className="menuContainer">
                             <Menu />
                         </div>
-                        {/* {userData === null ? <></> : <> */}
-                        <div className="contentContainer" style={{ borderRadius: '20px'}}>
-                            <div style={{ backgroundColor: "white", borderRadius: '20px', padding: '20px' }}>
-                                <div className="myTable" style={{ height: 550, width: "100%" }}>
-                                    {/* <DataGrid
-                                            rows={userData}
+                        {userData === null ? <></> : <>
+                            <div className="contentContainer" style={{ borderRadius: '20px', }}>
+                                <div style={{ 
+                                    // backgroundColor: "#FFFFFF",
+                                     borderRadius: '20px', padding: '20px' }}>
+                                    <div className="myTable" style={{ height: 600, width: "100%",backgroundColor:"#ffffff",borderRadius:"30px" }}>
+                                        
+                                        <DataGrid
+                                            // rows={userData}
+                                            rows={rows}
                                             columns={columns}
                                             hideScrollbar={true}
-                               
+                                            getRowClassName={(params) => {
+                                                return params.row.status === 'valid' ? styles['active-row'] : styles['inactive-row'];
+                                            }}
+                                          
+                                            hideFooterSelectedRowCount={true}
+                                            // showCellVerticalBorder={true}
+                                            // columnHeaderFilterIconButton
+                                            // autoPageSize={true}
+                                            sx={{
+                                                border: '1px solid transparent', // change the color to your desired color
+                                              }}
+                                      
+                                        />
+                                      
 
-                                        /> */}
-                                    <div class="container">
-                                        
-                                       
-                                        <table class="table" style={{paddingTop:"20px"}}>
-                                            <thead>
-                                                <tr>
-                                                    <th>Unique Domain</th>
-                                                    <th>Status</th>
-                                                   
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td >sb.scorecardresearch.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>www.googletagmanager.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>tunnel.googlezip.net</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>encrypted-tbn2.gstatic.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>www-bikedekho-com.cdn.ampproject.org</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>connect.facebook.net</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>www.bikewale.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>www.gstatic.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#dff0d8" }}>
-                                                    <td>www.youtube.com</td>
-                                                    <td style={{ color: "green" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                
-                                                <tr style={{ backgroundColor: "#f2dede" }}>
-                                                    <td>downloadfilmyzilla.com</td>
-                                                    <td style={{ color: "red" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#f2dede" }}>
-                                                    <td>probiv.in</td>
-                                                    <td style={{ color: "red" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: "#f2dede" }}>
-                                                    <td>offerintro.com</td>
-                                                    <td style={{ color: "red" }}><i class="fa fa-circle" aria-hidden="true"></i></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
 
 
                                 </div>
-
-
+                                {/* <h1>{userData[0].time_stamp.toDate().toLocaleString()}</h1> */}
                             </div>
-                            {/* <h1>{userData[0].time_stamp.toDate().toLocaleString()}</h1> */}
-                        </div>
-                        {/* </>} */}
+                        </>}
                     </div>
                     <Footer />
                 </div>
